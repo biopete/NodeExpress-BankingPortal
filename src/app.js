@@ -15,18 +15,18 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist'))
 */
 
 /* Read Accounts and Users Data*/
-const accountsInit = fs.readFileSync(path.join(__dirname, 'json', 'accounts.json'),{encoding: 'utf8'});
-const accounts = JSON.parse(accountsInit);
+const accountData= fs.readFileSync(path.join(__dirname, 'json', 'accounts.json'),{encoding: 'utf8'});
+const accounts = JSON.parse(accountData);
 console.log(accounts);
 
-const usersInit = fs.readFileSync(path.join(__dirname, 'json', 'users.json'),{encoding: 'utf8'});
-const users = JSON.parse(usersInit);
+const userData= fs.readFileSync(path.join(__dirname, 'json', 'users.json'),{encoding: 'utf8'});
+const users = JSON.parse(userData);
 console.log(users);
 
 
 
 app.get('/', (req, res) => {
-  res.render('index', {'title': 'Accounts Summary', 'accounts': accounts});
+  res.render('index', {'title': 'Account Summary', 'accounts': accounts});
   return;
 });
 app.get('/savings', (req, res) => {
