@@ -9,19 +9,16 @@ app.set('view engine', 'ejs');
 
 /* Static public */
 app.use(express.static(path.join(__dirname, '/public/')));
-/*app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
-app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
-app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')));
-*/
+
+/* Middleware */
+app.use(express.urlencoded({extended: true}));
 
 /* Read Accounts and Users Data*/
 const accountData= fs.readFileSync(path.join(__dirname, 'json', 'accounts.json'),{encoding: 'utf8'});
 const accounts = JSON.parse(accountData);
-console.log(accounts);
 
 const userData= fs.readFileSync(path.join(__dirname, 'json', 'users.json'),{encoding: 'utf8'});
 const users = JSON.parse(userData);
-console.log(users);
 
 
 
@@ -44,6 +41,31 @@ app.get('/credit', (req, res) => {
 app.get('/profile', (req, res) => {
   res.render('profile', {'title': 'Profile', 'user': users[0]});
   return;
+});
+app.get('/transfer', (req, res) => {
+  res.render('transfer', {'title': 'Transfer', 'user': users[0]});
+  return;
+});
+app.post('/transfer', (req, res) => {
+  const {from, to, amount} = req.body;
+  accounts[from].balance = accounts[from].balance - parseInt(amount);
+  accounts[to].balance = accounts[to].balance + parseInt(amount);
+  const accountsJSON = JSON.stringify(accounts);
+  fs.writeFileSync(path.join(__dirname, 'json', 'accounts.json'), accountsJSON, 'utf8');
+  return res.render('transfer', {'message': 'Transfer Completed' });
+});
+
+app.get('/payment', (req, res) => {
+  res.render('payment', {'title': 'Payment', 'account': accounts['credit']});
+  return;
+});
+app.post('/payment', (req, res) => {
+  const {amount} = req.body;
+  accounts['credit'].balance = accounts['credit'].balance - parseInt(amount);
+  accounts['credit'].available = accounts['credit'].available + parseInt(amount);
+  const accountsJSON = JSON.stringify(accounts);
+  fs.writeFileSync(path.join(__dirname, 'json', 'accounts.json'), accountsJSON,'utf8');
+  return res.render('payment', { message: "Payment Successful", account: accounts.credit });
 });
 
 app.listen(port, () => {
