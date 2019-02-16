@@ -41,11 +41,11 @@ app.get('/credit', (req, res) => {
   res.render('account', {'title': 'Credit Summary', 'account': accounts.credit});
   return;
 });
-
 app.get('/profile', (req, res) => {
   res.render('profile', {'title': 'Profile', 'user': users[0]});
   return;
 });
+
 app.listen(port, () => {
-console.log(`Listening on ${port}`);
+  console.log(`Listening on ${port}`);
 });
