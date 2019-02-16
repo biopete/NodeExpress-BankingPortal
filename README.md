@@ -4,5 +4,5 @@ In this project you’ll build a simple Banking Portal with Node & Express. Ther
 
 # Peter commit git commit -am 'Completed the module'
 
-# Peter commit git commit -am 'Completed the module files and profiles' 3
+# Peter commit git commit -am 'Completed the module files and profiles' 2
 git commit -am 'Completed the module'
