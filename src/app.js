@@ -13,52 +13,25 @@ app.use(express.static(path.join(__dirname, '/public/')));
 /* Middleware */
 app.use(express.urlencoded({extended: true}));
 
+const accountRoutes = require('./routes/accounts');
+const serviceRoutes = require('./routes/services');
+
 /* require data repo */
-const { accounts, users, writeJSON } = require('./data');
+//const { accounts, users, writeJSON } = require('./data');
+
+app.use('/account', accountRoutes);
+app.use('/services', serviceRoutes);
 
 app.get('/', (req, res) => {
   res.render('index', {'title': 'Account Summary', 'accounts': accounts});
   return;
 });
-app.get('/savings', (req, res) => {
-  res.render('account', {'title': 'Savings Summary', 'account': accounts.savings});
-  return;
-});
-app.get('/checking', (req, res) => {
-  res.render('account', {'title': 'Checking Summary', 'account': accounts.checking});
-  return;
-});
-app.get('/credit', (req, res) => {
-  res.render('account', {'title': 'Credit Summary', 'account': accounts.credit});
-  return;
-});
+
 app.get('/profile', (req, res) => {
   res.render('profile', {'title': 'Profile', 'user': users[0]});
   return;
 });
-app.get('/transfer', (req, res) => {
-  res.render('transfer', {'title': 'Transfer', 'user': users[0]});
-  return;
-});
-app.post('/transfer', (req, res) => {
-  const {from, to, amount} = req.body;
-  accounts[from].balance = accounts[from].balance - parseInt(amount);
-  accounts[to].balance = accounts[to].balance + parseInt(amount);
-  writeJSON();
-  return res.render('transfer', {'message': 'Transfer Completed' });
-});
 
-app.get('/payment', (req, res) => {
-  res.render('payment', {'title': 'Payment', 'account': accounts['credit']});
-  return;
-});
-app.post('/payment', (req, res) => {
-  const {amount} = req.body;
-  accounts['credit'].balance = accounts['credit'].balance - parseInt(amount);
-  accounts['credit'].available = accounts['credit'].available + parseInt(amount);
-  writeJSON();
-  return res.render('payment', { message: "Payment Successful", account: accounts.credit });
-});
 
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
