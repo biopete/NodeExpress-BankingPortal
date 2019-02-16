@@ -18,10 +18,10 @@ const { accounts, users, writeJSON } = require('./data');
 
 /* Routes */
 const accountRoutes = require('./routes/accounts');
-const serviceRoutes = require('./routes/services');
+const servicesRoutes = require('./routes/services');
 
 app.use('/account', accountRoutes);
-app.use('/services', serviceRoutes);
+app.use('/services', servicesRoutes);
 
 app.get('/', (req, res) => {
   res.render('index', {'title': 'Account Summary', 'accounts': accounts});
