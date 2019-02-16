@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const {accounts} = require('../data');
+const {accounts, writeJSON} = require('../data');
 
 router.get('/transfer', (req, res) => {
-  res.render('transfer', {'title': 'Transfer', 'user': users[0]});
+  res.render('transfer', {'title': 'Transfer'});
   return;
 });
+
 router.post('/transfer', (req, res) => {
   const {from, to, amount} = req.body;
   accounts[from].balance = accounts[from].balance - parseInt(amount);
