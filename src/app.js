@@ -13,11 +13,12 @@ app.use(express.static(path.join(__dirname, '/public/')));
 /* Middleware */
 app.use(express.urlencoded({extended: true}));
 
+/* require data repo */
+const { accounts, users, writeJSON } = require('./data');
+
+/* Routes */
 const accountRoutes = require('./routes/accounts');
 const serviceRoutes = require('./routes/services');
-
-/* require data repo */
-//const { accounts, users, writeJSON } = require('./data');
 
 app.use('/account', accountRoutes);
 app.use('/services', serviceRoutes);
